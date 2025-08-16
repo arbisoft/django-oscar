@@ -24,22 +24,6 @@ class TestAnAdmin(testcases.WebTestCase):
 
     def test_can_create_an_offer(self):
         list_page = self.get(reverse("dashboard:offer-list"))
-        # Debug template context
-        print("Template context:", list_page.context.keys())
-        print("can_add_offer:--101", list_page.context.get("can_add_offer"))
-        print("user permissions:", list_page.context["user"].get_all_permissions())
-        print("wooalist_page.text", list_page.text)
-        # list_page.context.get('can_add_offer') = True
-        # Or check the permission tag directly
-        from oscar.templatetags.dashboard_permissions import has_dashboard_permission
-
-        context = {"user": self.user}
-        print(
-            "Permission check:",
-            has_dashboard_permission(
-                context, "offer-list", app_label="offers_dashboard"
-            ),
-        )
 
         metadata_page = list_page.click("Create new offer")
         metadata_form = metadata_page.forms["create_update_offer_step_form"]
