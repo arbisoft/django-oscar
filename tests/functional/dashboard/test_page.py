@@ -13,7 +13,10 @@ class TestPageDashboard(WebTestCase):
     is_anonymous = False
     is_staff = True
     permissions = DashboardPermission.get(
-        "view-flatpage", "add-flatpage", "delete-flatpage"
+        "flatpages",
+        "view_flatpage",
+        "add_flatpage",
+        "delete_flatpage",
     )
 
     def setUp(self):

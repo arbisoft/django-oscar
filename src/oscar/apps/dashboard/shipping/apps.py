@@ -16,16 +16,26 @@ class ShippingDashboardConfig(OscarDashboardConfig):
         DashboardPermission = get_class("dashboard.permissions", "DashboardPermission")
 
         self.permissions_map = {
-            "shipping-method-list": DashboardPermission.get("view-shipping_method"),
-            "shipping-method-create": DashboardPermission.get("add-shipping_method"),
-            "shipping-method-detail": DashboardPermission.get("view-shipping_method"),
-            "shipping-method-edit": DashboardPermission.get("change-shipping_method"),
-            "shipping-method-delete": DashboardPermission.get("delete-shipping_method"),
+            "shipping-method-list": DashboardPermission.get(
+                "shipping", "view_weightbased"
+            ),
+            "shipping-method-create": DashboardPermission.get(
+                "shipping", "add_weightbased"
+            ),
+            "shipping-method-detail": DashboardPermission.get(
+                "shipping", "view_weightbased"
+            ),
+            "shipping-method-edit": DashboardPermission.get(
+                "shipping", "change_weightbased"
+            ),
+            "shipping-method-delete": DashboardPermission.get(
+                "shipping", "delete_weightbased"
+            ),
             "shipping-method-band-edit": DashboardPermission.get(
-                "change-shipping_method"
+                "shipping", "change_weightbased"
             ),
             "shipping-method-band-delete": DashboardPermission.get(
-                "delete-shipping_method"
+                "shipping", "delete_weightbased"
             ),
         }
 

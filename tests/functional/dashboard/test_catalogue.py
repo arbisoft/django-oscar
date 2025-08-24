@@ -36,8 +36,8 @@ DashboardPermission = get_class("dashboard.permissions", "DashboardPermission")
 class TestCatalogueViews(WebTestCase):
     is_staff = True
     permissions = DashboardPermission.get(
-        "view-product", "view-category", "view-stockalert"
-    )
+        "catalogue", "view_product", "view_category"
+    ) + DashboardPermission.get("partner", "view_stockalert")
 
     def test_exist(self):
         urls = [
@@ -114,7 +114,7 @@ class TestCatalogueViews(WebTestCase):
 class TestAStaffUser(WebTestCase):
     is_staff = True
     permissions = DashboardPermission.get(
-        "view-product", "change-product", "delete-product", "add-product"
+        "catalogue", "view_product", "change_product", "delete_product", "add_product"
     )
 
     def setUp(self):
@@ -339,7 +339,8 @@ class TestProductCreatePageWithUnicodeSlug(TestCase):
         ProductClass.objects.create(name="Book", slug=self.slug)
         self.user = User.objects.create(is_staff=True)
         add_permissions(
-            self.user, DashboardPermission.get("view-product", "add-product")
+            self.user,
+            DashboardPermission.get("catalogue", "view_product", "add_product"),
         )
         self.client.force_login(self.user)
 

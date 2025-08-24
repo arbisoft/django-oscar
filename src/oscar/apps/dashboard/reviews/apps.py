@@ -18,9 +18,13 @@ class ReviewsDashboardConfig(OscarDashboardConfig):
         DashboardPermission = get_class("dashboard.permissions", "DashboardPermission")
 
         self.permissions_map = {
-            "reviews-list": DashboardPermission.get("view-product_review"),
-            "reviews-update": DashboardPermission.get("change-product_review"),
-            "reviews-delete": DashboardPermission.get("delete-product_review"),
+            "reviews-list": DashboardPermission.get("reviews", "view_productreview"),
+            "reviews-update": DashboardPermission.get(
+                "reviews", "change_productreview"
+            ),
+            "reviews-delete": DashboardPermission.get(
+                "reviews", "delete_productreview"
+            ),
         }
 
     # pylint: disable=attribute-defined-outside-init

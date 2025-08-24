@@ -15,7 +15,11 @@ class TestCategoryDashboard(WebTestCase):
         add_permissions(
             self.staff,
             DashboardPermission.get(
-                "view-category", "change-category", "delete-category", "add-category"
+                "catalogue",
+                "view_category",
+                "change_category",
+                "delete_category",
+                "add_category",
             ),
         )
         create_from_breadcrumbs("A > B > C")

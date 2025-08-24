@@ -27,7 +27,9 @@ class HasDashboardPermissionTagTests(TestCase):
             email="testuser@example.com", username="testuser", password="pass"
         )
 
-        permission_codes = DashboardPermission.get("view-order", "view-offer")
+        permission_codes = DashboardPermission.get(
+            "order", "view_order"
+        ) + DashboardPermission.get("offer", "view_conditionaloffer")
         for perm in permission_codes:
             app_label, codename = perm.split(".", 1)
             permission = Permission.objects.filter(

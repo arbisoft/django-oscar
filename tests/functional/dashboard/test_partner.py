@@ -10,7 +10,10 @@ DashboardPermission = get_class("dashboard.permissions", "DashboardPermission")
 class TestPartnerDashboard(WebTestCase):
     is_staff = True
     permissions = DashboardPermission.get(
-        "view-partner", "add-partner", "change-partner"
+        "partner",
+        "view_partner",
+        "add_partner",
+        "change_partner",
     )
 
     def test_allows_a_partner_user_to_be_created(self):

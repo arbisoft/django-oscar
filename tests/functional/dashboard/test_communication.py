@@ -18,7 +18,9 @@ class TestAnAdmin(WebTestCase):
         add_permissions(
             self.staff,
             DashboardPermission.get(
-                "view-communication_event_type", "change-communication_event_type"
+                "communication",
+                "view_communicationeventtype",
+                "change_communicationeventtype",
             ),
         )
         self.commtype = CommunicationEventType.objects.create(
@@ -58,7 +60,8 @@ class TestCommsUpdatePageWithUnicodeSlug(TestCase):
         )
         self.user = User.objects.create(is_staff=True)
         add_permissions(
-            self.user, DashboardPermission.get("change-communication_event_type")
+            self.user,
+            DashboardPermission.get("communication", "change_communicationeventtype"),
         )
         self.client.force_login(self.user)
 

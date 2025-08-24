@@ -13,7 +13,11 @@ class TestAnAdmin(testcases.WebTestCase):
     # New version of offer tests buy using WebTest
     is_staff = True
     permissions = DashboardPermission.get(
-        "view-offer", "add-offer", "change-offer", "delete-offer"
+        "offer",
+        "view_conditionaloffer",
+        "add_conditionaloffer",
+        "change_conditionaloffer",
+        "delete_conditionaloffer",
     )
 
     def setUp(self):
@@ -290,7 +294,7 @@ class TestAnAdmin(testcases.WebTestCase):
 
 class TestOfferListSearch(testcases.WebTestCase):
     is_staff = True
-    permissions = DashboardPermission.get("view-offer")
+    permissions = DashboardPermission.get("offer", "view_conditionaloffer")
 
     TEST_CASES = [
         ({}, []),

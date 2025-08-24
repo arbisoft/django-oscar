@@ -18,17 +18,17 @@ class VouchersDashboardConfig(OscarDashboardConfig):
         DashboardPermission = get_class("dashboard.permissions", "DashboardPermission")
 
         self.permissions_map = {
-            "voucher-list": DashboardPermission.get("view-voucher"),
-            "voucher-create": DashboardPermission.get("add-voucher"),
-            "voucher-update": DashboardPermission.get("change-voucher"),
-            "voucher-delete": DashboardPermission.get("delete-voucher"),
-            "voucher-stats": DashboardPermission.get("view-voucher"),
-            "voucher-set-list": DashboardPermission.get("view-voucher"),
-            "voucher-set-create": DashboardPermission.get("add-voucher"),
-            "voucher-set-update": DashboardPermission.get("change-voucher"),
-            "voucher-set-detail": DashboardPermission.get("view-voucher"),
-            "voucher-set-download": DashboardPermission.get("view-voucher"),
-            "voucher-set-delete": DashboardPermission.get("delete-voucher"),
+            "voucher-list": DashboardPermission.get("voucher", "view_voucher"),
+            "voucher-create": DashboardPermission.get("voucher", "add_voucher"),
+            "voucher-update": DashboardPermission.get("voucher", "change_voucher"),
+            "voucher-delete": DashboardPermission.get("voucher", "delete_voucher"),
+            "voucher-stats": DashboardPermission.get("voucher", "view_voucher"),
+            "voucher-set-list": DashboardPermission.get("voucher", "view_voucher"),
+            "voucher-set-create": DashboardPermission.get("voucher", "add_voucher"),
+            "voucher-set-update": DashboardPermission.get("voucher", "change_voucher"),
+            "voucher-set-detail": DashboardPermission.get("voucher", "view_voucher"),
+            "voucher-set-download": DashboardPermission.get("voucher", "view_voucher"),
+            "voucher-set-delete": DashboardPermission.get("voucher", "delete_voucher"),
         }
 
     # pylint: disable=attribute-defined-outside-init

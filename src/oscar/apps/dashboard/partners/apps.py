@@ -18,28 +18,33 @@ class PartnersDashboardConfig(OscarDashboardConfig):
         DashboardPermission = get_class("dashboard.permissions", "DashboardPermission")
 
         self.permissions_map = {
-            "partner-list": DashboardPermission.get("view-partner"),
-            "partner-create": DashboardPermission.get("add-partner"),
+            "partner-list": DashboardPermission.get("partner", "view_partner"),
+            "partner-create": DashboardPermission.get("partner", "add_partner"),
             "partner-manage": (
-                DashboardPermission.get("view-partner"),
-                DashboardPermission.get("change-partner"),
+                DashboardPermission.get("partner", "view_partner"),
+                DashboardPermission.get("partner", "change_partner"),
             ),
-            "partner-delete": DashboardPermission.get("delete-partner"),
+            "partner-delete": DashboardPermission.get("partner", "delete_partner"),
             "partner-user-create": (
-                DashboardPermission.get("change-partner"),
-                DashboardPermission.get("add-user"),
+                DashboardPermission.get("partner", "change_partner"),
+                DashboardPermission.get(self.User._meta.app_label, "add_user"),
             ),
-            "partner-user-select": DashboardPermission.get("change-partner"),
-            "partner-user-link": DashboardPermission.get("change-partner"),
-            "partner-user-unlink": DashboardPermission.get("change-partner"),
+            "partner-user-select": DashboardPermission.get("partner", "change_partner"),
+            "partner-user-link": DashboardPermission.get("partner", "change_partner"),
+            "partner-user-unlink": DashboardPermission.get("partner", "change_partner"),
             "partner-user-update": (
-                DashboardPermission.get("change-partner"),
-                DashboardPermission.get("change-user"),
+                DashboardPermission.get("partner", "change_partner"),
+                DashboardPermission.get(self.User._meta.app_label, "change_user"),
             ),
         }
 
     # pylint: disable=attribute-defined-outside-init
     def ready(self):
+        # Import here, when Django is ready
+        from django.contrib.auth import get_user_model
+
+        self.User = get_user_model()
+
         self.list_view = get_class("dashboard.partners.views", "PartnerListView")
         self.create_view = get_class("dashboard.partners.views", "PartnerCreateView")
         self.manage_view = get_class("dashboard.partners.views", "PartnerManageView")

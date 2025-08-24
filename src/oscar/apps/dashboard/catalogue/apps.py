@@ -20,80 +20,88 @@ class CatalogueDashboardConfig(OscarDashboardConfig):
         self.permissions_map = {
             # Product views
             "catalogue-product": (
-                DashboardPermission.get("view-product"),
+                DashboardPermission.get("catalogue", "view_product"),
                 DashboardPermission.partner_dashboard_access,
             ),
             "catalogue-product-create": (
-                DashboardPermission.get("view-product", "add-product"),
+                DashboardPermission.get("catalogue", "view_product", "add_product"),
                 DashboardPermission.partner_dashboard_access,
             ),
             "catalogue-product-list": (
-                DashboardPermission.get("view-product"),
+                DashboardPermission.get("catalogue", "view_product"),
                 DashboardPermission.partner_dashboard_access,
             ),
             "catalogue-product-delete": (
-                DashboardPermission.get("delete-product"),
+                DashboardPermission.get("catalogue", "delete_product"),
                 DashboardPermission.partner_dashboard_access,
             ),
             "catalogue-product-lookup": (
-                DashboardPermission.get("view-product"),
+                DashboardPermission.get("catalogue", "view_product"),
                 DashboardPermission.partner_dashboard_access,
             ),
             "catalogue-product-create-child": DashboardPermission.get(
-                "view-product", "add-product"
+                "catalogue", "view_product", "add_product"
             ),
             # Stock alerts
-            "stock-alert-list": DashboardPermission.get("view-stockalert"),
+            "stock-alert-list": DashboardPermission.get("partner", "view_stockalert"),
             # Category views
-            "catalogue-category-list": DashboardPermission.get("view-category"),
-            "catalogue-category-detail-list": DashboardPermission.get("view-category"),
-            "catalogue-category-create": DashboardPermission.get("add-category"),
-            "catalogue-category-create-child": DashboardPermission.get("add-category"),
-            "catalogue-category-update": DashboardPermission.get("change-category"),
-            "catalogue-category-delete": DashboardPermission.get("delete-category"),
+            "catalogue-category-list": DashboardPermission.get(
+                "catalogue", "view_category"
+            ),
+            "catalogue-category-detail-list": DashboardPermission.get(
+                "catalogue", "view_category"
+            ),
+            "catalogue-category-create": DashboardPermission.get(
+                "catalogue", "add_category"
+            ),
+            "catalogue-category-create-child": DashboardPermission.get(
+                "catalogue", "add_category"
+            ),
+            "catalogue-category-update": DashboardPermission.get(
+                "catalogue", "change_category"
+            ),
+            "catalogue-category-delete": DashboardPermission.get(
+                "catalogue", "delete_category"
+            ),
             # Product class views
-            "catalogue-class-create": DashboardPermission.get("add-productclass"),
-            "catalogue-class-list": DashboardPermission.get("view-productclass"),
-            "catalogue-class-update": DashboardPermission.get("change-productclass"),
-            "catalogue-class-delete": DashboardPermission.get("delete-productclass"),
+            "catalogue-class-create": DashboardPermission.get(
+                "catalogue", "add_productclass"
+            ),
+            "catalogue-class-list": DashboardPermission.get(
+                "catalogue", "view_productclass"
+            ),
+            "catalogue-class-update": DashboardPermission.get(
+                "catalogue", "change_productclass"
+            ),
+            "catalogue-class-delete": DashboardPermission.get(
+                "catalogue", "delete_productclass"
+            ),
             # Attribute option group views
             "catalogue-attribute-option-group-list": DashboardPermission.get(
-                "view-attributeoptiongroup"
+                "catalogue", "view_attributeoptiongroup"
             ),
             "catalogue-attribute-option-group-create": DashboardPermission.get(
-                "view-attributeoptiongroup", "add-attributeoptiongroup"
+                "catalogue", "view_attributeoptiongroup", "add_attributeoptiongroup"
             ),
             "catalogue-attribute-option-group-update": DashboardPermission.get(
-                "view-attributeoptiongroup", "change-attributeoptiongroup"
+                "catalogue", "view_attributeoptiongroup", "change_attributeoptiongroup"
             ),
             "catalogue-attribute-option-group-delete": DashboardPermission.get(
-                "view-attributeoptiongroup", "delete-attributeoptiongroup"
+                "catalogue", "view_attributeoptiongroup", "delete_attributeoptiongroup"
             ),
             # Option views
-            "catalogue-option-list": DashboardPermission.get("view-option"),
+            "catalogue-option-list": DashboardPermission.get(
+                "catalogue", "view_option"
+            ),
             "catalogue-option-create": DashboardPermission.get(
-                "view-option", "add-option"
+                "catalogue", "view_option", "add_option"
             ),
             "catalogue-option-update": DashboardPermission.get(
-                "view-option", "change-option"
+                "catalogue", "view_option", "change_option"
             ),
             "catalogue-option-delete": DashboardPermission.get(
-                "view-option", "delete-option"
+                "catalogue", "view_option", "delete_option"
             ),
-            # Offer views
-            "offer-list": DashboardPermission.get("view-offer"),
-            "offer-metadata": DashboardPermission.get("add-offer", "change-offer"),
-            "offer-condition": DashboardPermission.get("add-offer", "change-offer"),
-            "offer-benefit": DashboardPermission.get("add-offer", "change-offer"),
-            "offer-restrictions": DashboardPermission.get("add-offer", "change-offer"),
-            "offer-delete": DashboardPermission.get("delete-offer"),
-            "offer-detail": DashboardPermission.get("view-offer"),
-            # Range views
-            "range-list": DashboardPermission.get("view-range"),
-            "range-create": DashboardPermission.get("add-range"),
-            "range-update": DashboardPermission.get("change-range"),
-            "range-delete": DashboardPermission.get("delete-range"),
-            "range-products": DashboardPermission.get("change-range"),
         }
 
     # pylint: disable=attribute-defined-outside-init

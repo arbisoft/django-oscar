@@ -30,7 +30,7 @@ DashboardPermission = get_class("dashboard.permissions", "DashboardPermission")
 
 class TestAttributeOptionGroupListView(ListViewMixin, WebTestCase):
     is_staff = True
-    permissions = DashboardPermission.get("view-attributeoptiongroup")
+    permissions = DashboardPermission.get("catalogue", "view_attributeoptiongroup")
     url_name = "dashboard:catalogue-attribute-option-group-list"
 
     def _create_object(self, idx):
@@ -41,7 +41,9 @@ class TestAttributeOptionGroupListView(ListViewMixin, WebTestCase):
 class TestAttributeOptionGroupCreateView(PopUpObjectCreateMixin, WebTestCase):
     is_staff = True
     permissions = DashboardPermission.get(
-        "view-attributeoptiongroup", "add-attributeoptiongroup"
+        "catalogue",
+        "view_attributeoptiongroup",
+        "add_attributeoptiongroup",
     )
     model = AttributeOptionGroup
     form = AttributeOptionGroupForm
@@ -85,7 +87,9 @@ class TestAttributeOptionGroupCreateView(PopUpObjectCreateMixin, WebTestCase):
 class TestAttributeOptionGroupUpdateView(PopUpObjectUpdateMixin, WebTestCase):
     is_staff = True
     permissions = DashboardPermission.get(
-        "view-attributeoptiongroup", "change-attributeoptiongroup"
+        "catalogue",
+        "view_attributeoptiongroup",
+        "change_attributeoptiongroup",
     )
     model = AttributeOptionGroup
     form = AttributeOptionGroupForm
@@ -136,7 +140,9 @@ class TestAttributeOptionGroupUpdateView(PopUpObjectUpdateMixin, WebTestCase):
 class TestAttributeOptionGroupDeleteView(PopUpObjectDeleteMixin, WebTestCase):
     is_staff = True
     permissions = DashboardPermission.get(
-        "view-attributeoptiongroup", "delete-attributeoptiongroup"
+        "catalogue",
+        "view_attributeoptiongroup",
+        "delete_attributeoptiongroup",
     )
     model = AttributeOptionGroup
     page_title = None
