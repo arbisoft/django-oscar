@@ -11,10 +11,9 @@ class DashboardPermissionCheckTestCase(TestCase):
 
     def test_get_uses_explicit_permissions_mapping(self):
         """When codename has explicit mapping, .get() returns mapped permissions only."""
+
         class TestDashboardPermission(DashboardPermission):
-            permissions = {
-                "view_product": ["catalogue.view_product_special"]
-            }
+            permissions = {"view_product": ["catalogue.view_product_special"]}
 
         perms = set(TestDashboardPermission.get("catalogue", "view_product"))
 
@@ -30,13 +29,18 @@ class DashboardPermissionCheckTestCase(TestCase):
 
     def test_get_handles_multiple_codenames(self):
         """Should correctly handle multiple codenames — both mapped and unmapped."""
+
         class TestDashboardPermission(DashboardPermission):
             permissions = {
                 "view_product": ["catalogue.view_product_special"],
                 "edit_stock": ["catalogue.change_stockrecord_custom"],
             }
 
-        perms = set(TestDashboardPermission.get("catalogue", "view_product", "view_category", "edit_stock"))
+        perms = set(
+            TestDashboardPermission.get(
+                "catalogue", "view_product", "view_category", "edit_stock"
+            )
+        )
 
         # Mapped codenames → use explicit permissions
         self.assertIn("catalogue.view_product_special", perms)
