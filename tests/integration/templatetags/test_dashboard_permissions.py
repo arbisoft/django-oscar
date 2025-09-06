@@ -89,3 +89,14 @@ class HasDashboardPermissionTagTests(TestCase):
         context = Context({"request": self.factory.get("/"), "user": self.user})
         rendered = template.render(context).strip()
         self.assertEqual(rendered, "False")
+
+    def test_returns_false_if_app_config_missing(self):
+        """Return False if app_label is not installed (apps.get_app_config raises LookupError)."""
+        template = Template(
+            "{% load dashboard_permissions %}"
+            '{% has_dashboard_permission "order-list" "no_such_app" as can_view %}'
+            "{{ can_view }}"
+        )
+        context = Context({"request": self.factory.get("/"), "user": self.user})
+        rendered = template.render(context).strip()
+        self.assertEqual(rendered, "False")

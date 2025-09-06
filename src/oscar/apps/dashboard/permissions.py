@@ -43,23 +43,3 @@ class DashboardPermission:
                 permissions.add(f"{app_label}.{codename}")
 
         return list(permissions)
-
-    @classmethod
-    def get_all_permissions(cls):
-        """
-        Retrieve set of common dashboard permissions for permission checking.
-        This is a minimal set used by has_dashboard_perms() to detect dashboard access.
-        """
-        all_permissions = set(cls._common_dashboard_permissions)
-
-        for permissions in cls.permissions.values():
-            all_permissions.update(permissions)
-
-        return all_permissions
-
-    @classmethod
-    def has_dashboard_perms(cls, user):
-        """
-        Check if user has any of the dashboard permissions.
-        """
-        return len(cls.get_all_permissions() & user.get_all_permissions()) > 0
