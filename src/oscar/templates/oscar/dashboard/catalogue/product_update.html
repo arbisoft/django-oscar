@@ -272,9 +272,10 @@
                                         <table class='table table-striped table-bordered'>
                                             <caption>
                                                 {% trans "Variants" %}
-                                                <button class="btn btn-primary float-right" {% if not product.can_be_parent %}disabled{% endif %} name="action" type="submit" value="create-child" data-loading-text="{% trans 'Adding...' %}">
-                                                    <i class="fas fa-plus-circle"></i> {% trans "Add variant" %}
-                                                </button>
+                                                                {% has_dashboard_permission "catalogue-product-create-child" "catalogue_dashboard" as can_create_child %}
+                                                                <button class="btn btn-primary float-right" {% if not product.can_be_parent or not can_create_child %}disabled{% endif %} name="action" type="submit" value="create-child" data-loading-text="{% trans 'Adding...' %}">
+                                                                    <i class="fas fa-plus-circle"></i> {% trans "Add variant" %}
+                                                                </button>
                                             </caption>
                                             {% if children %}
                                                 <tr>
@@ -291,12 +292,18 @@
                                                         <td>{{ child.stockrecords.count }}</td>
                                                         <td>{% if child.is_public %}<span class="true">✔</span>{% else %}<span class="false">✘</span>{% endif %}</td>
                                                         <td>
+                                                            {% has_dashboard_permission "catalogue-product" "catalogue_dashboard" as can_edit_product %}
+                                                            {% has_dashboard_permission "catalogue-product-delete" "catalogue_dashboard" as can_delete_product %}
+                                                            {% if can_edit_product %}
                                                             <a href="{% url 'dashboard:catalogue-product' pk=child.id %}" class="btn btn-primary">
                                                                 {% trans "Edit" %}
                                                             </a>
+                                                            {% endif %}
+                                                            {% if can_delete_product %}
                                                             <a href="{% url 'dashboard:catalogue-product-delete' pk=child.id %}" class="btn btn-danger">
                                                                 {% trans "Delete" %}
                                                             </a>
+                                                            {% endif %}
                                                         </td>
                                                     </tr>
                                                 {% endfor %}

@@ -4,7 +4,7 @@
 {% load sorting_tags %}
 {% load i18n %}
 
-{% has_dashboard_permission "view-offer" "offers_dashboard" as can_view_offer %}
+{% has_dashboard_permission "offer-detail" "offers_dashboard" as can_view_offer %}
 
 {% block title %}
     {{ voucher_set.name }} | {{ block.super }}
@@ -23,9 +23,12 @@
 {% block header %}
 <div class="page-header">
     <div class="float-right">
+        {% has_dashboard_permission "voucher-set-download" "vouchers_dashboard" as can_download_voucher_set %}
+        {% if can_download_voucher_set %}
         <a href="{% url 'dashboard:voucher-set-download' pk=voucher_set.pk %}" class="btn btn-primary">
             <i class="fas fa-download"></i> {% trans "Download CSV" %}
         </a>
+        {% endif %}
     </div>
     <h1>{% trans "Voucher set" %} '{{ voucher_set.name }}'</h1>
 </div>
@@ -86,12 +89,18 @@
                             {% trans "Actions" %}
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                            {% has_dashboard_permission "voucher-stats" "vouchers_dashboard" as can_view_voucher_stats %}
+                            {% has_dashboard_permission "voucher-delete" "vouchers_dashboard" as can_delete_voucher %}
+                            {% if can_view_voucher_stats %}
                             <a class="dropdown-item" href="{% url 'dashboard:voucher-stats' pk=voucher.id %}">
                                 {% trans "Stats" %}
                             </a>
+                            {% endif %}
+                            {% if can_delete_voucher %}
                             <a class="dropdown-item" href="{% url 'dashboard:voucher-delete' pk=voucher.id %}">
                                 {% trans "Delete" %}
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -164,8 +173,14 @@
 </table>
 
 <div class="form-actions">
+    {% has_dashboard_permission "voucher-set-update" "vouchers_dashboard" as can_update_voucher_set %}
+    {% has_dashboard_permission "voucher-set-delete" "vouchers_dashboard" as can_delete_voucher_set %}
+    {% if can_update_voucher_set %}
     <a class="btn btn-primary" href="{% url 'dashboard:voucher-set-update' pk=voucher_set.pk %}">{% trans "Edit" %}</a> {% trans "or" %}
+    {% endif %}
+    {% if can_delete_voucher_set %}
     <a class="btn btn-danger" href="{% url 'dashboard:voucher-set-delete' pk=voucher_set.pk %}">{% trans "Delete" %}</a> {% trans "or" %}
+    {% endif %}
     <a href="{% url 'dashboard:voucher-set-list' %}">{% trans "cancel" %}</a>
 </div>
 {% endblock dashboard_content %}

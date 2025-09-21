@@ -17,8 +17,12 @@
 
 {% block header %}
     <div class="page-header">
-        <a id="create_new_shipping_method" href="{% url 'dashboard:shipping-method-create' %}" class="btn btn-primary float-right"><i class="fas fa-plus-circle"></i> {% trans "Create new shipping charge" %}</a>
+        {% load dashboard_permissions %}
+        {% has_dashboard_permission "shipping-method-create" "shipping_dashboard" as can_create_shipping %}
         <h1>{% trans "Shipping methods" %}</h1>
+        {% if can_create_shipping %}
+        <a id="create_new_shipping_method" href="{% url 'dashboard:shipping-method-create' %}" class="btn btn-primary float-right"><i class="fas fa-plus-circle"></i> {% trans "Create new shipping charge" %}</a>
+        {% endif %}
     </div>
 {% endblock header %}
 
@@ -43,9 +47,18 @@
                         <td>{{ method.num_bands }}</td>
                         <td>{{ method.default_weight }}</td>
                         <td>
+                            {% has_dashboard_permission "shipping-method-detail" "shipping_dashboard" as can_view_method %}
+                            {% has_dashboard_permission "shipping-method-edit" "shipping_dashboard" as can_edit_method %}
+                            {% has_dashboard_permission "shipping-method-delete" "shipping_dashboard" as can_delete_method %}
+                            {% if can_view_method %}
                             <a href="{% url 'dashboard:shipping-method-detail' pk=method.pk %}" class="btn btn-secondary">{% trans "View" %}</a>
+                            {% endif %}
+                            {% if can_edit_method %}
                             <a href="{% url 'dashboard:shipping-method-edit' pk=method.pk %}" class="btn btn-primary">{% trans "Edit" %}</a>
+                            {% endif %}
+                            {% if can_delete_method %}
                             <a href="{% url 'dashboard:shipping-method-delete' pk=method.pk %}" class="btn btn-danger">{% trans "Delete" %}</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

@@ -3,7 +3,7 @@
 {% load dashboard_permissions %}
 {% load i18n %}
 
-{% has_dashboard_permission "view-offer" "offers_dashboard" as can_view_offer %}
+{% has_dashboard_permission "offer-detail" "offers_dashboard" as can_view_offer %}
 
 {% block title %}
     {{ voucher }} | {% trans "Vouchers" %} | {{ block.super }}
@@ -133,18 +133,22 @@
     </table>
 
     <div class="form-actions">
-        {% if not voucher.voucher_set %}
+        {% has_dashboard_permission "voucher-update" "vouchers_dashboard" as can_update_voucher %}
+        {% has_dashboard_permission "voucher-set-update" "vouchers_dashboard" as can_update_voucher_set %}
+        {% has_dashboard_permission "voucher-delete" "vouchers_dashboard" as can_delete_voucher %}
+        {% has_dashboard_permission "voucher-set-delete" "vouchers_dashboard" as can_delete_voucher_set %}
+        {% if not voucher.voucher_set and can_update_voucher %}
         <a class="btn btn-primary" href="{% url 'dashboard:voucher-update' pk=voucher.id %}">{% trans "Edit" %}</a> {% trans "or" %}
-        {% else %}
+        {% elif voucher.voucher_set and can_update_voucher_set %}
         <a class="btn btn-primary" href="{% url 'dashboard:voucher-set-update' pk=voucher.voucher_set.pk %}">{% trans "Edit set" %}</a> {% trans "or" %}
         {% endif %}
+        {% if not voucher.voucher_set and can_delete_voucher %}
         <a class="btn btn-danger" href="{% url 'dashboard:voucher-delete' pk=voucher.id %}">
-        {% if not voucher.voucher_set %}
         {% trans "Delete" %}
-        {% else %}
-        {% trans "Delete from set" %}
-        {% endif %}
         </a> {% trans "or" %}
+        {% elif voucher.voucher_set and can_delete_voucher_set %}
+        <a class="btn btn-danger" href="{% url 'dashboard:voucher-set-delete' pk=voucher.voucher_set.pk %}">{% trans "Delete" %}</a> {% trans "or" %}
+        {% endif %}
         <a href="{% if not voucher.voucher_set %}{% url 'dashboard:voucher-list' %}{% else %}{% url 'dashboard:voucher-set-detail' pk=voucher.voucher_set.pk %}{% endif %}">{% trans "cancel" %}</a>
     </div>
 

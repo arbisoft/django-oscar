@@ -33,10 +33,15 @@
         {% include "oscar/dashboard/partials/form_fields.html" with form=form %}
         {% block form_actions %}
             <div class="form-actions">
+                {% load dashboard_permissions %}
+                {% has_dashboard_permission "range-create" "ranges_dashboard" as can_create_range %}
+                {% has_dashboard_permission "range-update" "ranges_dashboard" as can_update_range %}
+                {% if not range and can_create_range or range and can_update_range %}
                 <button class="btn btn-primary" type="submit" data-loading-text="{% trans 'Saving...' %}">{% trans "Save" %}</button> {% trans "or" %}
                 {# This is an input so we distinguish between which button was pressed #}
                 <input class="btn btn-primary" type="submit" name="action" value="{% trans "Save and edit products" %}"/>
                 {% trans "or" %}
+                {% endif %}
                 <a href="{% url 'dashboard:range-list' %}">{% trans "cancel" %}</a>
             </div>
         {% endblock form_actions %}

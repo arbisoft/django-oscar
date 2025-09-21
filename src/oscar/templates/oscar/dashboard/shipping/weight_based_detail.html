@@ -49,12 +49,21 @@
         </table>
 
         <p>
+            {% load dashboard_permissions %}
+            {% has_dashboard_permission "shipping-method-edit" "shipping_dashboard" as can_edit_method %}
+            {% has_dashboard_permission "shipping-method-delete" "shipping_dashboard" as can_delete_method %}
+            {% has_dashboard_permission "shipping-method-band-edit" "shipping_dashboard" as can_edit_band %}
+            {% has_dashboard_permission "shipping-method-band-delete" "shipping_dashboard" as can_delete_band %}
+            {% if can_edit_method %}
             <a id="edit_method" href="{% url 'dashboard:shipping-method-edit' pk=method.pk %}" class="btn btn-primary">
                 {% trans 'Edit shipping method' %}
             </a>
+            {% endif %}
+            {% if can_delete_method %}
             <a id="delete_method" href="{% url 'dashboard:shipping-method-delete' pk=method.pk %}" class="btn btn-danger">
                 {% trans 'Delete shipping method' %}
             </a>
+            {% endif %}
         </p>
 
         <h2>{% trans "Weight bands" %}</h2>
@@ -73,8 +82,12 @@
                             <td>{{ band.weight_from|floatformat:3 }} - {{ band.weight_to|floatformat:3 }}</td>
                             <td>{{ band.charge|currency }}</td>
                             <td>
+                                {% if can_edit_band %}
                                 <a id="edit_band_{{ band.id }}" href="{% url 'dashboard:shipping-method-band-edit' method_pk=band.method.pk pk=band.pk %}" class="btn btn-primary">{% trans "Edit" %}</a>
+                                {% endif %}
+                                {% if can_delete_band %}
                                 <a id="delete_band_{{ band.id }}" href="{% url 'dashboard:shipping-method-band-delete' method_pk=band.method.pk pk=band.pk %}" class="btn btn-danger">{% trans "Delete" %}</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -84,11 +97,13 @@
             <p>{% trans "No weight bands have been added yet." %}</p>
         {% endif %}
 
+        {% if can_edit_band %}
         <h2>{% trans "Add a new weight band" %}</h2>
         <form id="add_new_weight_band_form" method="post">
             {% csrf_token %}
             {% include "oscar/dashboard/partials/form_fields.html" with form=form %}
             <button type="submit" class="btn btn-primary" data-loading-text="{% trans 'Adding...' %}">{% trans 'Add weight band' %}</button>
         </form>
+        {% endif %}
     </div>
 {% endblock %}

@@ -20,9 +20,13 @@
     </nav>
 {% endblock %}
 
+{% load dashboard_permissions %}
 {% block header %}
     <div class="page-header">
-        <a href="{% url 'dashboard:voucher-create' %}" class="btn btn-primary float-right"><i class="fas fa-plus-circle"></i> {% trans "Create new voucher" %}</a>
+        {% has_dashboard_permission "voucher-create" "vouchers_dashboard" as can_create_voucher %}
+        {% if can_create_voucher %}
+            <a href="{% url 'dashboard:voucher-create' %}" class="btn btn-primary float-right"><i class="fas fa-plus-circle"></i> {% trans "Create new voucher" %}</a>
+        {% endif %}
         <h1>{% trans "Vouchers" %}</h1>
     </div>
 {% endblock header %}
@@ -135,25 +139,35 @@
                                                 {% trans "Actions" %}
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                {% has_dashboard_permission "voucher-stats" "vouchers_dashboard" as can_view_voucher_stats %}
+                                                {% has_dashboard_permission "voucher-update" "vouchers_dashboard" as can_update_voucher %}
+                                                {% has_dashboard_permission "voucher-set-update" "vouchers_dashboard" as can_update_voucher_set %}
+                                                {% has_dashboard_permission "voucher-delete" "vouchers_dashboard" as can_delete_voucher %}
+                                                {% has_dashboard_permission "voucher-set-delete" "vouchers_dashboard" as can_delete_voucher_set %}
+
+                                                {% if can_view_voucher_stats %}
                                                 <a class="dropdown-item" href="{% url 'dashboard:voucher-stats' pk=voucher.id %}">
                                                     {% trans "Stats" %}
                                                 </a>
-                                                {% if not voucher.voucher_set %}
+                                                {% endif %}
+                                                {% if not voucher.voucher_set and can_update_voucher %}
                                                 <a class="dropdown-item" href="{% url 'dashboard:voucher-update' pk=voucher.id %}">
                                                     {% trans "Edit" %}
                                                 </a>
-                                                {% else %}
+                                                {% elif voucher.voucher_set and can_update_voucher_set %}
                                                 <a class="dropdown-item" href="{% url 'dashboard:voucher-set-update' pk=voucher.voucher_set.pk %}">
                                                     {% trans "Edit set" %}
                                                 </a>
                                                 {% endif %}
+                                                {% if not voucher.voucher_set and can_delete_voucher %}
                                                 <a class="dropdown-item" href="{% url 'dashboard:voucher-delete' pk=voucher.id %}">
-                                                    {% if not voucher.voucher_set %}
                                                     {% trans "Delete" %}
-                                                    {% else %}
-                                                    {% trans "Delete from set" %}
-                                                    {% endif %}
                                                 </a>
+                                                {% elif voucher.voucher_set and can_delete_voucher_set %}
+                                                <a class="dropdown-item" href="{% url 'dashboard:voucher-set-delete' pk=voucher.voucher_set.pk %}">
+                                                    {% trans "Delete from set" %}
+                                                </a>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>

@@ -636,7 +636,7 @@
 
             <div class="tab-pane fade {% if active_tab == 'discounts' %}show active{% endif %}" id="discounts" role="tabpanel">
                 {% block tab_discounts %}
-                    {% has_dashboard_permission "view-offer" "offers_dashboard" as can_view_offer %}
+                    {% has_dashboard_permission "offer-detail" "offers_dashboard" as can_view_offer %}
 
                     {% with discounts=order.discounts.all %}
                         <div class="table-header">

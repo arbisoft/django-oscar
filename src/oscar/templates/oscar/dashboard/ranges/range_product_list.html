@@ -8,15 +8,15 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
+  <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a></li>
             <li class="breadcrumb-item">
                 <a href="{% url 'dashboard:range-list' %}">{% trans "Ranges" %}</a>
             </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'dashboard:range-update' pk=range.id %}">'{{ range.name }}'</a>
-            </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'dashboard:range-update' pk=range.id %}">'{{ range.name }}'</a>
+      </li>
             <li class="breadcrumb-item active" aria-current="page">
                 {% trans "Products" %}
             </li>
@@ -61,14 +61,19 @@
 
         <div class="card card-body bg-light">
 
+          {% load dashboard_permissions %}
+          {% has_dashboard_permission "range-products" "ranges_dashboard" as can_manage_products %}
+          {% has_dashboard_permission "range-reorder" "ranges_dashboard" as can_reorder %}
           <form id="add_products_range_form"  method="post" class="form-stacked" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="action" value="add_products"/>
             {% include 'oscar/dashboard/partials/form_fields.html' with form=form %}
             <div class="controls">
+              {% if can_manage_products %}
               <button type="submit" class="btn btn-primary" data-loading-text="{% trans 'Running...' %}">
                 {% trans "Go!" %}
               </button>
+              {% endif %}
             </div>
           </form>
 
@@ -108,11 +113,13 @@
             <table class="table table-striped table-bordered table-hover">
              <caption>
                 <h3 class="float-left">{% trans "Products in range" %}</h3>
-                <div class="float-right">
+                  <div class="float-right">
                   <input type="hidden" name="action" value="remove_selected_products" />
+                  {% if can_manage_products %}
                   <button type="submit" class="btn btn-secondary" data-loading-text="{% trans 'Removing...' %}">
                     {% trans "Remove selected products" %}
                   </button>
+                  {% endif %}
                 </div>
               </caption>
               <thead>
@@ -127,15 +134,19 @@
               <tbody class="product_list">
                 {% for product in products %}
                   <tr id="product_{{ product.pk }}">
-                    <td>
+                      <td>
+                      {% if can_manage_products %}
                       <input type="checkbox" name="selected_product" value="{{ product.id }}" />
+                      {% endif %}
                     </td>
                     <td>{{ product.upc|default:"-" }}</td>
                     <td><a href="{% url 'dashboard:catalogue-product' pk=product.id %}">{{ product.get_title }}</a></td>
                     <td>{% if product.is_discountable %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
-                    <td>
+                      <td>
+                      {% if can_manage_products %}
                       <a class="btn btn-danger" href="#" data-behaviours="remove">{% trans "Remove" %}</a>
-                      {% if range.is_reorderable %}
+                      {% endif %}
+                      {% if range.is_reorderable and can_reorder %}
                         <a href="#" class="btn btn-info btn-handle"><i class="fas fa-arrows-alt"></i>
                            {% trans "Re-order" context "Change the sequence order" %}
                         </a>
@@ -268,7 +279,10 @@
 </div>
 
 <div class="form-actions">
+  {% has_dashboard_permission "range-update" "ranges_dashboard" as can_update_range %}
+  {% if can_update_range %}
   <a href="{% url 'dashboard:range-update' pk=range.id %}" class="btn btn-primary">{% trans "Edit range" %}</a> {% trans "or" %}
+  {% endif %}
   <a href="{% url 'dashboard:range-list' %}" class="">{% trans "return to range list" %}</a>
 </div>
 

@@ -105,13 +105,20 @@
                                         {% trans "Actions" %}
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        {% load dashboard_permissions %}
+                                        {% has_dashboard_permission "reviews-update" "reviews_dashboard" as can_update_review %}
+                                        {% has_dashboard_permission "reviews-delete" "reviews_dashboard" as can_delete_review %}
                                         {% if review.title and review.product %}
                                             <a class="dropdown-item" href="{% url 'catalogue:reviews-detail' product_slug=review.product.slug product_pk=review.product.id pk=review.id %}">
                                                 {% trans "View on site" %}
                                             </a>
                                         {% endif %}
+                                        {% if can_update_review %}
                                         <a class="dropdown-item" href="{% url 'dashboard:reviews-update' pk=review.id %}">{% trans "Edit" %}</a>
+                                        {% endif %}
+                                        {% if can_delete_review %}
                                         <a class="dropdown-item" href="{% url 'dashboard:reviews-delete' pk=review.id %}">{% trans "Delete" %}</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
